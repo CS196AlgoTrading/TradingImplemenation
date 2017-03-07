@@ -31,13 +31,52 @@ The parts are generally connected like this:
 
 ## Git Version Control
 
-This project uses [https://github.com/git/git](https://github.com/git/git).
+This project uses [git](https://github.com/git/git).
+
+### Quick Reference
+
+| Command                        | Description                                                                         |
+| ------------------------------ | -----------------------------------------                                           |
+| `git branch`                   | list the branches and show the current branch                                       |
+| `git branch BRANCH-NAME`       | create a new branch with the name BRANCH-NAME                                       |
+| `git checkout BRANCH-NAME`     | checkout the branch named BRANCH-NAME                                               |
+| `git add FILENAME`             | add a file to *staging*                                                             |
+| `git commit -m "some message"` | bundle all the files in staging into a new commit (a new version of the branch)     |
+| `git push origin BRANCH`       | pushes the current branch (on your computer) to the GitHub server hosting our repo  |
+| `git fetch origin`                    | download the latest version of the repo, but don't change the code on your computer |
+| `git merge origin/BRANCH`      | merge the fetched code into your local working copy of the repo                     |
+
+
+### Quick Workflow Reference
+
+  1. Checkout master: `git checkout master`
+  2. Get the latest changes from GitHub: `git fetch origin`
+  3. Merge the latest version of master into my local version of master: `git merge origin/master`
+  4. Create a new branch for the code I will write: `git branch my-new-feature`
+  5. Checkout the branch: `git checkout my-new-feature`
+  6. Write the code that implements the feature to be added
+  7. See which files I changed and added: `git status -s`
+  7. Add each file *individually* to the staging area:
+    * `git add some_file_that_I_made.py`
+    * `git add some_other_file_I_changed.py`
+  8. Commit all of the files in staging: `git commit -m "add my-new-feature blah blah"`
+    * this makes a new version of the codebase based on all the files in staging
+  9. Push (upload) my new commit (version) to GitHub: `git push origin my-new-feature`
+
 
 ### Example Workflow
 
 This is an example of using git as a developer of this project. In this example, I will add code to this project that completes the **Listener** part.
 
-First, I need to checkout the *branch* that I will work on.
+First, I need to download the latest copy of *master* --- the main branch of our codebase --- from GitHub to my computer. I will checkout *master*, download the latest version, and then merge the latest version of *master* with my version of *master*.
+
+```
+$ git checkout master      # checkout the master branch on my computer
+$ git fetch origin         # download the latest code from GitHub, but don't modify the code on my computer
+$ git merge origin/master  # "merge" the latest version of master into my local working version of master
+```
+
+Then, I need to checkout the *branch* that I will work on.
 
 ```
 $ git checkout listener
