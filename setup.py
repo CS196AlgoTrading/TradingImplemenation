@@ -7,6 +7,6 @@ setup(
     author="Thomas Fischer, Ish Shah, Max Qian, ADD YOUR NAME HERE",
     description="A simple trading platform",
     keywords="algorithmic trading platform",
-    url="http://github.com/CS196AlgoTrading/trading-platform"
+    url="http://github.com/CS196AlgoTrading/tradingplatform"
 )
 
