@@ -16,8 +16,11 @@ class Listener:
     # listen checks for updates and writes them to
     # the output file every `frequency` seconds
     def listen(self, frequency):
-        # implement this
-        pass
+        import time
+        time.sleep(frequency)
+        out = checkUpdate()
+        output = open(output_file, 'w')
+        output.write(out)
 
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
