@@ -2,6 +2,9 @@
 # It exposes the function `listen` which calls
 # checkUpdate every `frequency` seconds and writes
 # the latest data to an output file
+
+import time
+
 class Listener:
     def __init__(self, ticker, output_file):
         self.ticker = ticker
@@ -16,11 +19,10 @@ class Listener:
     # listen checks for updates and writes them to
     # the output file every `frequency` seconds
     def listen(self, frequency):
-        import time
         time.sleep(frequency)
         out = checkUpdate()
-        output = open(output_file, 'w')
-        output.write(out)
+        with open(output_file, 'w') as output:
+            output.write(out)
 
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
