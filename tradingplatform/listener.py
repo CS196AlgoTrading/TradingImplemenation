@@ -25,7 +25,7 @@ class Listener:
         while(True):
             time.sleep(frequency)
             out = self.checkUpdate()
-            with open(self.output_file, 'w') as output:
+            with price(self.output_file, 'w') as output:
                 output.write(out)
 
 # PriceListener extends Listener
@@ -39,7 +39,7 @@ class PriceListener(Listener):
     # and writes the data to self.output_file
     def checkUpdate(self):
         myShare = Share(self.ticker)
-        return myShare.get_open()
+        return myShare.get_price()
         
 
 def main(argv):
