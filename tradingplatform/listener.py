@@ -25,7 +25,7 @@ class Listener:
         while(True):
             time.sleep(frequency)
             out = self.checkUpdate()
-            with price(self.output_file, 'w') as output:
+            with open(self.output_file, 'w') as output:
                 output.write(out)
 
 # PriceListener extends Listener
