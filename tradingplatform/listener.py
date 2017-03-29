@@ -4,6 +4,9 @@
 # the latest data to an output file
 
 import time
+import sys
+import getopt
+from yahoo_finance import Share
 
 class Listener:
     def __init__(self, ticker, output_file):
@@ -21,29 +24,53 @@ class Listener:
     def listen(self, frequency):
         while(True):
             time.sleep(frequency)
-            out = checkUpdate()
-            with open(output_file, 'w') as output:
+            out = self.checkUpdate()
+            with open(self.output_file, 'w') as output:
                 output.write(out)
 
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
 class PriceListener(Listener):
     def __init__(self, ticker, output_file):
-        super().__init__(self, ticker, output_file)
+        super().__init__(ticker, output_file)
 
     # checkUpdate gets the latest price
     # using the yahoo-finance library
     # and writes the data to self.output_file
     def checkUpdate(self):
-        # implement this
-        # print(some_string, file=self.output_file) will be useful
-        pass
+        myShare = Share(self.ticker)
+        return myShare.get_price()
+        
 
-def main():
+def main(argv):
     # implement the code to parse command-line arguments,
     # create some sort of Listener based on those,
     # and start listening
-    pass
+    ticker = ''
+    frequency = 1
+    outputFile = ''
+
+    try:
+        opts, args = getopt.getopt(argv,"ht:f:o:",["ticker=","frequency=", "ofile="])
+    except getopt.GetoptError:
+        print ('listener.py -t <ticker> -f <frequency> -o <outputFile>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print ('listener.py -t <ticker> -f <frequency> -o <outputFile>')
+            sys.exit()
+        elif opt in ("-t", "--ticker"):
+            ticker = arg
+        elif opt in ("-f", "--frequency"):
+            frequency = int(arg)
+        elif opt in ("-o", "--ofile"):
+            outputFile = arg
+
+
+
+
+    listener = PriceListener(ticker, outputFile)
+    listener.listen(frequency)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
