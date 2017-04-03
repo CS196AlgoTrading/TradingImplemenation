@@ -1,3 +1,4 @@
+import json
 # Streamer has a ticker symbol and an input file
 # It exposes the function `stream` which calls
 # reads the input file and yields the data as
@@ -14,7 +15,12 @@ class Streamer:
     # This function returns when the input file is
     # closed.
     def stream(self):
-        # implement this
+        with open(self.input_file,"r") as f:
+            data=f.read()
+            f.close() 
+            #i don't know what the input file looks like yet so i just assume it's gonna be split by ","
+        j_object=json.load({data})
+        output=json.dump(j_object,)
         pass
 
 def main():
