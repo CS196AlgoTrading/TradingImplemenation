@@ -7,11 +7,12 @@ import time
 import sys
 import getopt
 from yahoo_finance import Share
-
+from datetime import datetime
 class Listener:
     def __init__(self, ticker, output_file):
         self.ticker = ticker
         self.output_file = output_file
+        self.share = Share(self.ticker)
 
     # checkUpdate is an abstract method that
     # should be implemented by all subclasses
@@ -25,8 +26,10 @@ class Listener:
         while(True):
             time.sleep(frequency)
             out = self.checkUpdate()
-            with open(self.output_file, 'w') as output:
-                output.write(out)
+            print ('out', self.output_file)
+            with open(self.output_file, 'a+') as output:
+                output.write(str(datetime.now().time()) + '\t' + self.ticker + '\t' + out + '\n')
+                
 
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
@@ -38,17 +41,16 @@ class PriceListener(Listener):
     # using the yahoo-finance library
     # and writes the data to self.output_file
     def checkUpdate(self):
-        myShare = Share(self.ticker)
-        return myShare.get_price()
+        return self.share.get_price()
         
 
 def main(argv):
     # implement the code to parse command-line arguments,
     # create some sort of Listener based on those,
     # and start listening
-    ticker = ''
+    ticker = 'YHOO'
     frequency = 1
-    outputFile = ''
+    outputFile = 'outputfile'
 
     try:
         opts, args = getopt.getopt(argv,"ht:f:o:",["ticker=","frequency=", "ofile="])

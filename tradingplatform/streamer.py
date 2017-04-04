@@ -16,13 +16,13 @@ class Streamer:
     # closed.
     def stream(self):
         with open(self.input_file,"r") as f:
-            data=f.read()
-            f.close() 
-            #i don't know what the input file looks like yet so i just assume it's gonna be split by ","
+            for line in f:
+                data=f.read()
+                f.close() 
         j_object=json.load({data})
         output=json.dump(j_object,)
         pass
-
+    
 def main():
     # implement the code to parse command-line arguments,
     # create a Listener based on those arguments,
