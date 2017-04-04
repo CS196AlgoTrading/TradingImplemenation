@@ -4,10 +4,7 @@ def compareToAvg(prices):
     i = 0
     total = 0
     for price in prices:
-        i = i + 1
-        total = total + price
+        i += 1
+        total += price
         historic = total/i
-        if (price>historic):
-            yield True
-        else:
-            yield False
+        yield (price>historic)
