@@ -18,10 +18,10 @@ class Streamer:
     # This function returns when the input file is
     # closed.
     def stream(self):
-            with open(self.input_file, 'R') as info:
-                for line in info:
-                    date, ticker, price = line.split('\t')
-                    yield date,ticker,float(price)
+        with open(self.input_file, 'R') as info:
+            for line in info:
+                date, ticker, price = line.split('\t')
+                yield date,ticker,float(price)
 
 
 def main(argv):
