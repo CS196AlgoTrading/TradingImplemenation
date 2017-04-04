@@ -19,6 +19,7 @@ class Streamer:
             for line in f:
                 data=f.read()
                 f.close() 
+                
         j_object=json.load({data})
         output=json.dump(j_object,)
         pass

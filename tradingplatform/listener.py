@@ -33,6 +33,7 @@ class Listener:
 
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
+
 class PriceListener(Listener):
     def __init__(self, ticker, output_file):
         super().__init__(ticker, output_file)
