@@ -25,8 +25,8 @@ class Listener:
         while(True):
             time.sleep(frequency)
             out = self.checkUpdate()
-            with open(self.output_file, 'w') as output:
-                output.write(out)
+            with open(self.output_file, 'a') as output:
+                output.write('\t'.join('%s'%x for x in out)+"\n")
 
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
@@ -39,8 +39,8 @@ class PriceListener(Listener):
     # and writes the data to self.output_file
     def checkUpdate(self):
         myShare = Share(self.ticker)
-        return myShare.get_price()
-        
+        return myShare.get_trade_datetime(), self.ticker, myShare.get_price()
+
 
 def main(argv):
     # implement the code to parse command-line arguments,
