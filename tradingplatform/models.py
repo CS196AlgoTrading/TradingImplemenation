@@ -50,9 +50,9 @@ def main(argv):
     while(holdingStock > -1):
         if buyOrSell(ticker,prices):
             holdingStock += 100
-            profit -= holdingStock * prices
+            profit -= holdingStock * prices * 1.1
         else:
-            profit += holdingStock * prices
+            profit += holdingStock * prices * 0.9
             holdingStock = 0
 
 
