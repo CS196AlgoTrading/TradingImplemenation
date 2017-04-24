@@ -27,10 +27,10 @@ def buyOrSell(ticker, prices):
 
 def main(argv):
     fileName = ""
-    amout = 0
+    holdingStock = 0
     ticker = ""
         try:
-            opts, args = getopt.getopt(argv,"ht:a:p:f:,["ticker=","amount=", "profit=","fileName="])
+            opts, args = getopt.getopt(argv,"ht:h:p:f:,["ticker=","holdingStock=", "profit=","fileName="])
         except getopt.GetoptError:
             print ('models.py -t <ticker> -a <amount> -p <profit> -f <file name>')
             sys.exit(2)
@@ -40,20 +40,20 @@ def main(argv):
                 sys.exit()
             elif opt in ("-t", "--ticker"):
                 ticker = arg
-            elif opt in ("-a", "--amount"):
-                print("amount of stocks:", amount)
+            elif opt in ("-h", "--amount"):
+                print("amount of holding stocks:", holdingStock)
             elif opt in ("-p", "--profit"):
                 print("current profit:", profit)
             elif opt in ("-f","--file name"):
                 fileName = argv
 
-    while(amount > -1):
+    while(holdingStock > -1):
         if buyOrSell(ticker,prices):
-            amount += 100
-            profit -= amount * prices
+            holdingStock += 100
+            profit -= holdingStock * prices
         else:
-            profit += amount * prices
-            amount = 0
+            profit += holdingStock * prices
+            holdingStock = 0
 
 
 if __name__ == "__main__":
