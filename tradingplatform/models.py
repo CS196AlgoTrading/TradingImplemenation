@@ -16,9 +16,9 @@ class models:
     def makeDecision():
 
         if compareToAvg(currentprice,historicData):
-            decisionScore ++
+            decisionScore += 1
         else:
-            decisionScore --
+            decisionScore += 1
 
         if decisionScore > 5 :
             return "buy in"
