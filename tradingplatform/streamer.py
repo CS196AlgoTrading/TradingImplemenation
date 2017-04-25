@@ -21,7 +21,7 @@ class Streamer:
         with open(self.input_file, 'r') as info:
             for line in info:
                 date, ticker, price = line.split('\t')
-                if ticker is self.ticker:
+                if ticker == self.ticker:
                     yield date,ticker,float(price)
 
 
