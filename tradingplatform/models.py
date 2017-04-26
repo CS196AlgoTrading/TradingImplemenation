@@ -1,5 +1,6 @@
 import getopt
 import sys
+import Streamer
 
 def compareToAvg(prices):
     # Yields true if increasing, false if decreasing
@@ -13,17 +14,16 @@ def compareToAvg(prices):
         yield (price>historic)
 
 def buyOrSell(ticker, prices):
-    while True:
-        point = 0
-        increase = 0
-        decrease = 0
-        while point <= 50: #check 50 points of the average to decide
-            if compareToAvg(prices):
-                increase += 1
-            else:
-                decrease += 1
-            yield (increase >= decrease) #sell stocks Otherwise, buy stocks
-            point += 1
+    point = 0
+    increase = 0
+    decrease = 0
+    while point <= 50: #check 50 points of the average to decide
+        if compareToAvg(prices):
+            increase += 1
+        else:
+            decrease += 1
+        point += 1
+    yield (increase >= decrease) #sell stocks Otherwise, buy stocks
 
 def main(argv):
     fileName = ""
@@ -46,6 +46,9 @@ def main(argv):
                 print("current profit:", profit)
             elif opt in ("-f","--file name"):
                 fileName = argv
+
+    streamer = Streamer(ticker, fileName)
+    prices = streamer.stream()
 
     while(holdingStock > -1):
         if buyOrSell(ticker,prices):

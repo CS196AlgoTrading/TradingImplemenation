@@ -32,19 +32,17 @@ def main(argv):
     filename = None
     ticker = ""
     try:
-        opts, args = getopt.getopt(argv,"ht:f:",["ticker=","filename="])
+        opts, args = getopt.getopt(argv,"ht:",["ticker="])
     except getopt.GetoptError:
-        print('streamer.py -f <filename> -t <ticker>')
+        print('streamer.py -t <ticker>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ("streamer.py -f <filename> -t <ticker>")
+            print ("streamer.py -t <ticker>")
             sys.exit()
-        elif opt in ("-f", "--filename"):
-            filename = arg
         elif opt in ("-t", "--ticker"):
             ticker = arg
-
+    filename = ticker + ".txt"
     streamer = Streamer(ticker, filename)
     for t in streamer.stream(): # t for tuple
         print(t)

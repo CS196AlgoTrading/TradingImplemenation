@@ -51,22 +51,21 @@ def main(argv):
     outputFile = ''
 
     try:
-        opts, args = getopt.getopt(argv,"ht:f:o:",["ticker=","frequency=", "ofile="])
+        opts, args = getopt.getopt(argv,"ht:f:",["ticker=","frequency="])
     except getopt.GetoptError:
-        print ('listener.py -t <ticker> -f <frequency> -o <outputFile>')
+        print ('listener.py -t <ticker> -f <frequency>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('listener.py -t <ticker> -f <frequency> -o <outputFile>')
+            print ('listener.py -t <ticker> -f <frequency>')
             sys.exit()
         elif opt in ("-t", "--ticker"):
             ticker = arg
         elif opt in ("-f", "--frequency"):
             frequency = int(arg)
-        elif opt in ("-o", "--ofile"):
-            outputFile = arg
 
 
+    outputFile = ticker + ".txt"
 
 
     listener = PriceListener(ticker, outputFile)
