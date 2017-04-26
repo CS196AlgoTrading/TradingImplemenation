@@ -45,6 +45,7 @@ def main(argv):
             elif opt in ("-p", "--profit"):
                 print("current profit:", profit)
 
+    fileName = ticker + ".txt"
     streamer = Streamer(ticker, fileName)
     prices = streamer.stream()
 
