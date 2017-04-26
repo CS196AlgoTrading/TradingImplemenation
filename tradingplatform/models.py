@@ -30,9 +30,9 @@ def main(argv):
     holdingStock = 0
     ticker = ""
         try:
-            opts, args = getopt.getopt(argv,"ht:h:p:f:,["ticker=","holdingStock=", "profit=","fileName="])
+            opts, args = getopt.getopt(argv,"ht:h:p:,["ticker=","holdingStock=", "profit="])
         except getopt.GetoptError:
-            print ('models.py -t <ticker> -a <amount> -p <profit> -f <file name>')
+            print ('models.py -t <ticker> -a <amount> -p <profit>')
             sys.exit(2)
         for opt, arg in opts:
             if opt == '-h':
@@ -44,8 +44,6 @@ def main(argv):
                 print("amount of holding stocks:", holdingStock)
             elif opt in ("-p", "--profit"):
                 print("current profit:", profit)
-            elif opt in ("-f","--file name"):
-                fileName = argv
 
     streamer = Streamer(ticker, fileName)
     prices = streamer.stream()
