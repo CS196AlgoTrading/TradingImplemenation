@@ -17,13 +17,12 @@ def buyOrSell(ticker, prices):
     point = 0
     increase = 0
     decrease = 0
-    while point <= 50: #check 50 points of the average to decide
+    for point in range (50): #check 50 points of the average to decide
         if compareToAvg(prices):
             increase += 1
         else:
             decrease += 1
-        point += 1
-    yield (increase >= decrease) #sell stocks Otherwise, buy stocks
+    return (increase >= decrease) #sell stocks Otherwise, buy stocks
 
 def main(argv):
     fileName = ""
@@ -47,7 +46,7 @@ def main(argv):
 
     fileName = ticker + ".txt"
     streamer = Streamer(ticker, fileName)
-    prices = streamer.stream()
+    prices = t[1] for t in streamer.stream() # t for tuple
 
     while(holdingStock > -1):
         if buyOrSell(ticker,prices):
