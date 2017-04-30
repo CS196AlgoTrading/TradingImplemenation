@@ -18,10 +18,11 @@ class Streamer:
     # This function returns when the input file is
     # closed.
     def stream(self):
-        with open(self.input_file, 'R') as info:
+        with open(self.input_file, 'r') as info:
             for line in info:
                 date, ticker, price = line.split('\t')
-                yield date,ticker,float(price)
+                if ticker == self.ticker:
+                    yield date,ticker,float(price)
 
 
 def main(argv):
@@ -29,18 +30,20 @@ def main(argv):
     # create a Listener based on those arguments,
     # and start streaming the data
     filename = None
+    ticker = ""
     try:
-        opts, args = getopt.getopt(argv,"hl",["listener"])
+        opts, args = getopt.getopt(argv,"ht:",["ticker="])
     except getopt.GetoptError:
-        print('streamer.py -f <filename>')
+        print('streamer.py -t <ticker>')
         sys.exit(2)
-    for opt.arg in opts:
+    for opt, arg in opts:
         if opt == '-h':
-            print ("streamer.py -f <filename>")
-        elif opt in ("-f", "--filename"):
-            filename = arg
-
-    streamer = Streamer(filename)
+            print ("streamer.py -t <ticker>")
+            sys.exit()
+        elif opt in ("-t", "--ticker"):
+            ticker = arg
+    filename = ticker + ".txt"
+    streamer = Streamer(ticker, filename)
     for t in streamer.stream(): # t for tuple
         print(t)
 

@@ -25,8 +25,8 @@ class Listener:
         while(True):
             time.sleep(frequency)
             out = self.checkUpdate()
-            with open(self.output_file, 'w') as output:
-                output.write(out)
+            with open(self.output_file, 'a') as output:
+                output.write('\t'.join('%s'%x for x in out)+"\n")
 
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
@@ -39,8 +39,8 @@ class PriceListener(Listener):
     # and writes the data to self.output_file
     def checkUpdate(self):
         myShare = Share(self.ticker)
-        return myShare.get_price()
-        
+        return myShare.get_trade_datetime(), self.ticker, myShare.get_price()
+
 
 def main(argv):
     # implement the code to parse command-line arguments,
@@ -51,22 +51,21 @@ def main(argv):
     outputFile = ''
 
     try:
-        opts, args = getopt.getopt(argv,"ht:f:o:",["ticker=","frequency=", "ofile="])
+        opts, args = getopt.getopt(argv,"ht:f:",["ticker=","frequency="])
     except getopt.GetoptError:
-        print ('listener.py -t <ticker> -f <frequency> -o <outputFile>')
+        print ('listener.py -t <ticker> -f <frequency>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('listener.py -t <ticker> -f <frequency> -o <outputFile>')
+            print ('listener.py -t <ticker> -f <frequency>')
             sys.exit()
         elif opt in ("-t", "--ticker"):
             ticker = arg
         elif opt in ("-f", "--frequency"):
             frequency = int(arg)
-        elif opt in ("-o", "--ofile"):
-            outputFile = arg
 
 
+    outputFile = ticker + ".txt"
 
 
     listener = PriceListener(ticker, outputFile)
