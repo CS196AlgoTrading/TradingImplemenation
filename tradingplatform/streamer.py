@@ -1,6 +1,5 @@
 import sys
 import getopt
-import listener
 from yahoo_finance import Share
 # Streamer has a ticker symbol and an input file
 # It exposes the function `stream` which calls

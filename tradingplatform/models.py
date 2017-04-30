@@ -1,6 +1,7 @@
 import getopt
 import sys
-from streamer import Streamer
+import tradingplatform
+from tradingplatform.streamer import Streamer
 
 historic = 0
 def compareToAvg(prices):
@@ -11,11 +12,10 @@ def compareToAvg(prices):
         number += 1
         total += price
         historic = total/number
-        yield (price>historic)
+        yield (price > historic * 1.1)
 
 def tradingAmount(ticker):
     increase = 0
-    decrease = 0
     currentPrice = -1
     prices = []
     fileName = ticker + ".txt"
@@ -25,9 +25,7 @@ def tradingAmount(ticker):
     for point in range (50): #check 50 points of the average to decide
         if compareToAvg(prices):
             increase += 1
-        else:
-            decrease += 1
-    if(increase > decrease):
+    if(increase > 30):
         currentPrice = prices[len(prices)-1]
     return currentPrice
 
@@ -56,7 +54,7 @@ def main(argv):
         else:
             profit += holdingStock * price * 0.9
             holdingStock = 0
-        print("amount of holding stocks: %d \tcurrent profit: %f" %(holdingStock,profit))
+        print("amount of holding stocks: %d\tcurrent profit: %f" %(holdingStock,profit))
 
 if __name__ == "__main__":
     main(sys.argv[1:])

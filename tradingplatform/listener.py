@@ -47,7 +47,7 @@ def main(argv):
     # create some sort of Listener based on those,
     # and start listening
     ticker = ''
-    frequency = 1
+    frequency = 0.0
     outputFile = ''
 
     try:
@@ -62,7 +62,7 @@ def main(argv):
         elif opt in ("-t", "--ticker"):
             ticker = arg
         elif opt in ("-f", "--frequency"):
-            frequency = int(arg)
+            frequency = float(arg)
 
 
     outputFile = ticker + ".txt"
