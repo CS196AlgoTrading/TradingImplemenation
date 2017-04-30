@@ -12,11 +12,9 @@ class Streamer:
         self.ticker = ticker
         self.input_file = input_file
 
-    # stream opens the input file and continually
-    # tries to read data from it. If data is read,
-    # it is yielded as a Python object or primitive.
-    # This function returns when the input file is
-    # closed.
+    # stream opens the input file and read the last_line.
+    #  It will return a Python object or primitive.
+
     def stream(self):
         with open(self.input_file, 'R') as info:
             lines = info.read().splitlines()

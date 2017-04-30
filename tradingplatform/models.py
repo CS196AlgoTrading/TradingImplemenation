@@ -18,12 +18,14 @@ def compareToAvg(price):
     historictotal += price
     return indicator
 
+# It will continue to get value from streamer until there is a decision buy or sell
+# made.
 def tradingAmount(ticker):
     global averageprice
     while(True){
     fileName = ticker + ".txt"
     reader = Streamer(ticker, fileName)
-    price = reader.stream();
+    price = reader.stream()[2];
     if compareToAvg(price):
         return price
     else if price < averageprice:
