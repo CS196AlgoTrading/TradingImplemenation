@@ -1,5 +1,6 @@
 import getopt
 import sys
+<<<<<<< HEAD
 import time
 from streamer import Streamer
 
@@ -32,6 +33,38 @@ def tradingAmount(ticker):
         return (0 - price)
     time.sleep(10)
     }
+=======
+from streamer import Streamer
+
+historic = 0
+def compareToAvg(prices):
+    # Yields true if increasing, false if decreasing
+    number = 0
+    total = 0
+    for price in prices:
+        number += 1
+        total += price
+        historic = total/number
+        yield (price>historic)
+
+def tradingAmount(ticker):
+    increase = 0
+    decrease = 0
+    currentPrice = -1
+    prices = []
+    fileName = ticker + ".txt"
+    reader = Streamer(ticker, fileName)
+    for t in reader.stream(): # t for tuple
+        prices.append(t[2])
+    for point in range (50): #check 50 points of the average to decide
+        if compareToAvg(prices):
+            increase += 1
+        else:
+            decrease += 1
+    if(increase > decrease):
+        currentPrice = prices[len(prices)-1]
+    return currentPrice
+>>>>>>> origin
 
 def main(argv):
     fileName = ""
@@ -52,11 +85,19 @@ def main(argv):
 
     while(holdingStock > -1):
         price = tradingAmount(ticker)
+<<<<<<< HEAD
         if price > 0:
             holdingStock += 100
             profit -= holdingStock * price * 1.1
         else:
             profit -= holdingStock * price * 0.9
+=======
+        if holdingStock == 0 or price < 0:
+            holdingStock += 100
+            profit -= holdingStock * price * 1.1
+        else:
+            profit += holdingStock * price * 0.9
+>>>>>>> origin
             holdingStock = 0
         print("amount of holding stocks: %d \tcurrent profit: %f" %(holdingStock,profit))
 

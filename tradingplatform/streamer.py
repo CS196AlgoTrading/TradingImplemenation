@@ -16,11 +16,13 @@ class Streamer:
     #  It will return a Python object or primitive.
 
     def stream(self):
+
         with open(self.input_file, 'R') as info:
             lines = info.read().splitlines()
             last_line = lines[-1]
             date, ticker, price = last_line.split('\t')
             return date,ticker,float(price)
+
 
 
 def main(argv):
