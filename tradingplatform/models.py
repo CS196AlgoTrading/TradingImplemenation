@@ -1,6 +1,5 @@
 import getopt
 import sys
-<<<<<<< HEAD
 import time
 from streamer import Streamer
 
@@ -33,7 +32,7 @@ def tradingAmount(ticker):
         return (0 - price)
     time.sleep(10)
     }
-=======
+
 from streamer import Streamer
 
 historic = 0
@@ -64,7 +63,6 @@ def tradingAmount(ticker):
     if(increase > decrease):
         currentPrice = prices[len(prices)-1]
     return currentPrice
->>>>>>> origin
 
 def main(argv):
     fileName = ""
@@ -85,19 +83,17 @@ def main(argv):
 
     while(holdingStock > -1):
         price = tradingAmount(ticker)
-<<<<<<< HEAD
         if price > 0:
             holdingStock += 100
             profit -= holdingStock * price * 1.1
         else:
             profit -= holdingStock * price * 0.9
-=======
         if holdingStock == 0 or price < 0:
             holdingStock += 100
             profit -= holdingStock * price * 1.1
         else:
             profit += holdingStock * price * 0.9
->>>>>>> origin
+
             holdingStock = 0
         print("amount of holding stocks: %d \tcurrent profit: %f" %(holdingStock,profit))
 
