@@ -1,35 +1,37 @@
 import getopt
 import sys
+import time
 from streamer import Streamer
 
-historic = 0
-def compareToAvg(prices):
-    # Yields true if increasing, false if decreasing
-    number = 0
-    total = 0
-    for price in prices:
-        number += 1
-        total += price
-        historic = total/number
-        yield (price>historic)
+totalnumber = 0
+historictotal = 0
+averageprice = 0
 
+def compareToAvg(price):
+    # Yields true if increasing, false if decreasing
+    global totalnumber
+    global historictotal
+    global averageprice
+    averageprice = historictotal/totalnumber
+    indicator = price > averageprice
+    totalnumber += 1
+    historictotal += price
+    return indicator
+
+# It will continue to get value from streamer until there is a decision buy or sell
+# made.
 def tradingAmount(ticker):
-    increase = 0
-    decrease = 0
-    currentPrice = -1
-    prices = []
+    global averageprice
+    while(True){
     fileName = ticker + ".txt"
     reader = Streamer(ticker, fileName)
-    for t in reader.stream(): # t for tuple
-        prices.append(t[2])
-    for point in range (50): #check 50 points of the average to decide
-        if compareToAvg(prices):
-            increase += 1
-        else:
-            decrease += 1
-    if(increase > decrease):
-        currentPrice = prices[len(prices)-1]
-    return currentPrice
+    price = reader.stream()[2];
+    if compareToAvg(price):
+        return price
+    else if price < averageprice:
+        return (0 - price)
+    time.sleep(10)
+    }
 
 def main(argv):
     fileName = ""
@@ -50,12 +52,13 @@ def main(argv):
 
     while(holdingStock > -1):
         price = tradingAmount(ticker)
-        if holdingStock == 0 or price < 0:
+        if price > 0:
             holdingStock += 100
             profit -= holdingStock * price * 1.1
         else:
-            profit += holdingStock * price * 0.9
-            holdingStock = 0
+            holdingStock -= 100
+            profit -= holdingStock * price * 0.9
+        
         print("amount of holding stocks: %d \tcurrent profit: %f" %(holdingStock,profit))
 
 if __name__ == "__main__":
