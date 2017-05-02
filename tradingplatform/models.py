@@ -1,8 +1,3 @@
-import getopt
-import sys
-import tradingplatform
-from tradingplatform.streamer import Streamer
-
 historic = 0
 def compareToAvg(prices):
     # Yields true if increasing, false if decreasing
@@ -14,47 +9,33 @@ def compareToAvg(prices):
         historic = total/number
         yield (price > historic * 1.1)
 
-def tradingAmount(ticker):
+def buyOrSell(prices):
     increase = 0
-    currentPrice = -1
-    prices = []
-    fileName = ticker + ".txt"
-    reader = Streamer(ticker, fileName)
-    for t in reader.stream(): # t for tuple
-        prices.append(t[2])
+    currentPrice = 0.0
+    decrease = 0
+    lastPrice = 0
     for point in range (50): #check 50 points of the average to decide
+        if point >= len(prices):
+            break
         if compareToAvg(prices):
             increase += 1
-    if(increase > 30):
-        currentPrice = prices[len(prices)-1]
+        else:
+            decrease += 1
+        lastPrice = prices[point]
+    if(increase > decrease):
+        currentPrice = lastPrice
     return currentPrice
 
-def main(argv):
-    fileName = ""
-    holdingStock = 0
-    ticker = ""
+def trade(prices):
+    holdingStock = 0.0
     profit = 0.0
-    try:
-        opts, args = getopt.getopt(argv,"ht:",["ticker="])
-    except getopt.GetoptError:
-        print ('models.py -t <ticker>')
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print ('models.py -t <ticker>')
-            sys.exit()
-        elif opt in ("-t", "--ticker"):
-            ticker = arg
 
     while(holdingStock > -1):
-        price = tradingAmount(ticker)
-        if holdingStock == 0 or price < 0:
-            holdingStock += 100
+        price = buyOrSell(prices)
+        if holdingStock == 0.0 or price < 0:
+            holdingStock += 100.0
             profit -= holdingStock * price * 1.1
         else:
             profit += holdingStock * price * 0.9
             holdingStock = 0
         print("amount of holding stocks: %d\tcurrent profit: %f" %(holdingStock,profit))
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
