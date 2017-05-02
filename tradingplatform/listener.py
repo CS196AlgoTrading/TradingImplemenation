@@ -4,8 +4,6 @@
 # the latest data to an output file
 
 import time
-import sys
-import getopt
 from yahoo_finance import Share
 
 class Listener:
@@ -40,31 +38,3 @@ class PriceListener(Listener):
     def checkUpdate(self):
         myShare = Share(self.ticker)
         return myShare.get_trade_datetime(), self.ticker, myShare.get_price()
-
-
-def main(argv):
-    # implement the code to parse command-line arguments,
-    # create some sort of Listener based on those,
-    # and start listening
-    ticker = ''
-    frequency = 0.0
-
-    try:
-        opts, args = getopt.getopt(argv,"ht:f:",["ticker=","frequency="])
-    except getopt.GetoptError:
-        print ('listener.py -t <ticker> -f <frequency>')
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print ('listener.py -t <ticker> -f <frequency>')
-            sys.exit()
-        elif opt in ("-t", "--ticker"):
-            ticker = arg
-        elif opt in ("-f", "--frequency"):
-            frequency = float(arg)
-
-    listener = PriceListener(ticker)
-    listener.listen(frequency)
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
