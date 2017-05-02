@@ -1,6 +1,4 @@
-import getopt
-import sys
-from streamer import Streamer
+from random import randint
 
 historic = 0
 def compareToAvg(prices):
@@ -11,52 +9,39 @@ def compareToAvg(prices):
         number += 1
         total += price
         historic = total/number
-        yield (price>historic)
+        yield (price > historic * 1.1)
 
-def tradingAmount(ticker):
+def buyOrSell(prices):
     increase = 0
     decrease = 0
-    currentPrice = -1
-    prices = []
-    fileName = ticker + ".txt"
-    reader = Streamer(ticker, fileName)
-    for t in reader.stream(): # t for tuple
-        prices.append(t[2])
+    lastPrice = 0
     for point in range (50): #check 50 points of the average to decide
+        if point >= len(prices):
+            break
         if compareToAvg(prices):
             increase += 1
         else:
             decrease += 1
-    if(increase > decrease):
-        currentPrice = prices[len(prices)-1]
-    return currentPrice
+        lastPrice = prices[point]
+    if(increase > decrease): #sell stocks
+        return lastPrice
+    return 0.0 - lastPrice
 
-def main(argv):
-    fileName = ""
+def trade(prices):
     holdingStock = 0
-    ticker = ""
     profit = 0.0
-    try:
-        opts, args = getopt.getopt(argv,"ht:",["ticker="])
-    except getopt.GetoptError:
-        print ('models.py -t <ticker>')
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print ('models.py -t <ticker>')
-            sys.exit()
-        elif opt in ("-t", "--ticker"):
-            ticker = arg
-
-    while(holdingStock > -1):
-        price = tradingAmount(ticker)
-        if holdingStock == 0 or price < 0:
-            holdingStock += 100
+    count = 0
+    while count < len(prices):
+        price = buyOrSell(prices)
+        if price < 0:
+            holdingStock -= int(999/price)
+            profit -= holdingStock * price * 1.1
+        elif holdingStock == 0:
+            holdingStock += randint(0,20)
             profit -= holdingStock * price * 1.1
         else:
-            profit += holdingStock * price * 0.9
-            holdingStock = 0
-        print("amount of holding stocks: %d \tcurrent profit: %f" %(holdingStock,profit))
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
+            stock = randint(0,holdingStock)
+            profit += stock * price * 0.9
+            holdingStock -= stock
+        print("amount of holding stocks: %d\tcurrent profit: %f" %(holdingStock,profit))
+        count += 1
