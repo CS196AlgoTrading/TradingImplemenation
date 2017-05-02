@@ -9,9 +9,9 @@ import getopt
 from yahoo_finance import Share
 
 class Listener:
-    def __init__(self, ticker, output_file):
+    def __init__(self, ticker):
         self.ticker = ticker
-        self.output_file = output_file
+        self.output_file = ticker + ".txt"
 
     # checkUpdate is an abstract method that
     # should be implemented by all subclasses
@@ -31,8 +31,8 @@ class Listener:
 # PriceListener extends Listener
 # Its checkUpdate function gets the latest price
 class PriceListener(Listener):
-    def __init__(self, ticker, output_file):
-        super().__init__(ticker, output_file)
+    def __init__(self, ticker):
+        super().__init__(ticker)
 
     # checkUpdate gets the latest price
     # using the yahoo-finance library
@@ -48,7 +48,6 @@ def main(argv):
     # and start listening
     ticker = ''
     frequency = 0.0
-    outputFile = ''
 
     try:
         opts, args = getopt.getopt(argv,"ht:f:",["ticker=","frequency="])
@@ -64,11 +63,7 @@ def main(argv):
         elif opt in ("-f", "--frequency"):
             frequency = float(arg)
 
-
-    outputFile = ticker + ".txt"
-
-
-    listener = PriceListener(ticker, outputFile)
+    listener = PriceListener(ticker)
     listener.listen(frequency)
 
 if __name__ == "__main__":
